@@ -8,4 +8,5 @@ A little about me:
 - I am taking STATS 220 because it seems interesting
 - I am interested in learning about automated processes
 
-A meme that captures how I currently feel about my university studies is ![](https://media1.tenor.com/m/wCDgXWspLF0AAAAd/snoopy-peanuts.gif)
+A meme that captures how I currently feel about my university studies is 
+![](https://media1.tenor.com/m/wCDgXWspLF0AAAAd/snoopy-peanuts.gif)
