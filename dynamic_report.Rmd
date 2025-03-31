@@ -1,0 +1,45 @@
+---
+title: My dynamic report
+output: html_fragment
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=FALSE, message=FALSE, warning=FALSE, error=FALSE)
+library(tidyverse)
+
+```
+
+```{css echo=FALSE}
+
+```
+
+## What's going on with this data?
+
+You need to change the contents of this Rmd! Replace the R code and markdown give below in this template document.
+
+```{r}
+logged_data <- read_csv('project2_responses.csv')
+
+#renaming variable
+logged_data <- rename(logged_data, grade =  "What was the grade of the climb?",
+                      attempts = "How many attempts did you take",
+                      top = "Topped?",
+                      colour = "What was the colour of the climb?")
+
+#convert v grades into numbers
+logged_data$grade_numbers <- as.numeric(gsub("V", "", logged_data$grade)) 
+
+#rearranging table
+logged_data <- logged_data[,c("Timestamp", "grade", "grade_numbers", "attempts", "top", "colour")]
+
+
+
+
+
+
+
+```
+
+The best pet to have is a `r best_pet` of course!
+
+![](https://c.tenor.com/-qBsG1HwR4oAAAAC/tenor.gif)
