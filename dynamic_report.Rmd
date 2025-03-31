@@ -32,11 +32,37 @@ logged_data$grade_numbers <- as.numeric(gsub("V", "", logged_data$grade))
 #rearranging table
 logged_data <- logged_data[,c("Timestamp", "grade", "grade_numbers", "attempts", "top", "colour")]
 
+colour_count <- table(logged_data$colour)
 
+median_grade <- median(logged_data$grade_numbers)
 
+mean_attempts_topped <- mean(logged_data$attempts[logged_data$top == "Yes"])
 
+min(logged_data$grade_numbers)
+max(logged_data$grade_numbers)
 
+min(logged_data$attempts)
+max(logged_data$attempts)
 
+sucess_count <- sum(logged_data$top == "Yes")
+total_climbs <- length(logged_data$top)
+
+sucess_rate <- (sucess_count / total_climbs) * 100
+
+grade_attempts <- aggregate(logged_data$attempts ~ logged_data$grade, FUN = mean)
+
+#bar graphs
+logged_data %>%
+  ggplot() + 
+    geom_bar(aes(x=colour))
+  
+logged_data %>%
+  ggplot() + 
+  geom_bar(aes(x=grade_numbers))
+
+logged_data %>%
+  ggplot() + 
+  geom_bar(aes(x=top, fill = top))
 
 ```
 
