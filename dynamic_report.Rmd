@@ -15,7 +15,6 @@ h4.author{
 }
 
 h4 { 
-  text-align: center;
   font-weight: bold;
 }
   
@@ -23,13 +22,8 @@ body, h1, h4{
   background: #b3c7f7;
   color: #000000;
   font: Helvetica;
-  text-align:center;
 }
 
-img, table {
-  display: block;
-  margin: 0 auto;
-}
 
 ```
 
