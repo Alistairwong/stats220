@@ -10,62 +10,123 @@ library(tidyverse)
 ```
 
 ```{css echo=FALSE}
+h4.author{ 
+  text-align: left;
+}
+
+h4 { 
+  text-align: center;
+  font-weight: bold;
+}
+  
+body, h1, h4{
+  background: #b3c7f7;
+  color: #000000;
+  font: Helvetica;
+}
 
 ```
 
-## What's going on with this data?
+## Climbing Data
+1. Colour
+2. Grade
+3. Attempts
+4. Topped?
 
-You need to change the contents of this Rmd! Replace the R code and markdown give below in this template document.
-
-```{r}
-logged_data <- read_csv('project2_responses.csv')
+```{r importing data, include=FALSE}
+logged_data <- read_csv('https://docs.google.com/spreadsheets/d/e/2PACX-1vSK2MfMMFFcAdHc9EOD1QYyhE2pqt4ye2S-4DLWr2lSmDAB9gnXLe3CHTdImwJahJDkFVY6HvUANXKV/pub?output=csv')
 
 #renaming variable
-logged_data <- rename(logged_data, grade =  "What was the grade of the climb?",
+latest_data <- rename(logged_data, grade =  "What was the grade of the climb?",
                       attempts = "How many attempts did you take",
                       top = "Topped?",
                       colour = "What was the colour of the climb?")
 
 #convert v grades into numbers
-logged_data$grade_numbers <- as.numeric(gsub("V", "", logged_data$grade)) 
+latest_data$grade_numbers <- as.numeric(gsub("V", "", latest_data$grade)) 
 
 #rearranging table
-logged_data <- logged_data[,c("Timestamp", "grade", "grade_numbers", "attempts", "top", "colour")]
+latest_data <- latest_data[,c("Timestamp", "grade", "grade_numbers", "attempts", "top", "colour")]
+```
 
-colour_count <- table(logged_data$colour)
-
-median_grade <- median(logged_data$grade_numbers)
-
-mean_attempts_topped <- mean(logged_data$attempts[logged_data$top == "Yes"])
-
-min(logged_data$grade_numbers)
-max(logged_data$grade_numbers)
-
-min(logged_data$attempts)
-max(logged_data$attempts)
-
-sucess_count <- sum(logged_data$top == "Yes")
-total_climbs <- length(logged_data$top)
-
-sucess_rate <- (sucess_count / total_climbs) * 100
-
-grade_attempts <- aggregate(logged_data$attempts ~ logged_data$grade, FUN = mean)
-
-#bar graphs
-logged_data %>%
+#### Colour of the climbs
+```{r colour and grade, echo=FALSE}
+latest_data %>%
   ggplot() + 
-    geom_bar(aes(x=colour))
-  
-logged_data %>%
-  ggplot() + 
-  geom_bar(aes(x=grade_numbers))
+    geom_bar(aes(x=colour)) + 
+    labs(title = "Colour and amount of climbs",
+         x = "Colour",
+         y = "Climbs")
+```
 
-logged_data %>%
+Table of how many climbs there are based on the colour of the route
+```{r colours, echo=FALSE}
+colour_count <- table(latest_data$colour)
+
+colour_count
+```
+
+
+#### Grade of the climbs
+```{r climbs and grades, echo=FALSE}
+latest_data %>%
   ggplot() + 
-  geom_bar(aes(x=top, fill = top))
+  geom_bar(aes(x=grade_numbers)) + 
+    labs(title = "Grade and amount of climbs",
+         x = "V-Grade",
+         y = "Climbs")  
+```
+
+Table of V-grade and amount of climbs
+```{r attempts, echo=FALSE}
+grade_table <-table(latest_data$grade_numbers)
+
+median_grade <- median(latest_data$grade_numbers)
+
+grade_attempts <- aggregate(latest_data$attempts ~ latest_data$grade, FUN = mean)
+
+grade_table
+
+paste("The median grade of attempted climbs is", round(median_grade, 2))
+```
+
+Table of v-grade and average attempts
+```{r grade attempts, echo=FALSE}
+
+grade_attempts
 
 ```
 
-The best pet to have is a `r best_pet` of course!
+#### Climb success
+```{r topped, echo=FALSE}
+latest_data %>%
+  ggplot() + 
+  geom_bar(aes(x=top, fill = top)) +
+    labs(title = "Did I top the climb?",
+         x = "Top?",
+         y = "Climbs")
+```
 
-![](https://c.tenor.com/-qBsG1HwR4oAAAAC/tenor.gif)
+
+```{r top success rate, echo=FALSE}
+
+sucess_count <- sum(latest_data$top == "Yes")
+total_climbs <- length(latest_data$top)
+
+sucess_rate <- (sucess_count / total_climbs) * 100
+
+mean_attempts_topped <- mean(latest_data$attempts[latest_data$top == "Yes"])
+
+paste("The success rate of topping a climb is", round(sucess_rate, 2), "%")
+
+paste("The average attempts taken if climb topped is", round(mean_attempts_topped, 2))
+```
+
+
+
+#### v5 climb in Kuala Lumpur, Malaysia
+![](https://i.imgur.com/g2KUHOs.gif)
+
+
+
+
